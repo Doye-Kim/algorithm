@@ -1,4 +1,4 @@
-// []https://school.programmers.co.kr/learn/courses/30/lessons/172928
+// https://school.programmers.co.kr/learn/courses/30/lessons/172928
 
 import java.util.Arrays;
 
