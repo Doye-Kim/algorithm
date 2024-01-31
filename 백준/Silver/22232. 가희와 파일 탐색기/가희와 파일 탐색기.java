@@ -10,6 +10,7 @@ public class Main {
 	public static void main(String[] args) throws Exception{
 		BufferedReader  br = new BufferedReader(new InputStreamReader(System.in));
 		PriorityQueue<File> pq = new PriorityQueue<>();
+
 		String[] a = br.readLine().split(" ");
 		n = Integer.parseInt(a[0]);
 		m = Integer.parseInt(a[1]);
@@ -25,12 +26,13 @@ public class Main {
 			String[] b = files[i].split("\\.");
 			//System.out.println(b[0] + " " + b[1]);
 			pq.add(new File(b[0], b[1]));
-
 		}
+		StringBuilder sb = new StringBuilder();
 		while(!pq.isEmpty()) {
 			File f = pq.poll();
-			System.out.println(f.filename + "." + f.extension);
+			sb.append(f.filename + "." + f.extension + "\n");
 		}
+		System.out.println(sb);
 	}
 
 
