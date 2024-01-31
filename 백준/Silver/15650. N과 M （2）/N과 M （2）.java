@@ -1,13 +1,15 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
 	static int n, m;
 	static int[] tgt;
 	static StringBuilder sb = new StringBuilder();
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		n = sc.nextInt();
-		m = sc.nextInt();
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String[] a = br.readLine().split(" ");
+		n = Integer.parseInt(a[0]);
+		m = Integer.parseInt(a[1]);
 		tgt = new int[m];
 		comb(0,0);
 		System.out.println(sb);
