@@ -6,6 +6,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		int n = Integer.parseInt(br.readLine());
 		ArrayList<String> words = new ArrayList<>();
 		for(int i = 0; i < n; i++) {
@@ -17,7 +18,8 @@ public class Main {
 			return word1.length() == word2.length() ? word1.compareTo(word2) : word1.length() - word2.length();
 		});
 		for(String w : words) {
-			System.out.println(w);
+			sb.append(w).append("\n");
 		}
+		System.out.println(sb);
 	}
 }
