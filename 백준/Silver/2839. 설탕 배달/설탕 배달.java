@@ -3,19 +3,22 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-	static int n, ans;
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		n = Integer.parseInt(br.readLine());
-		ans = Integer.MAX_VALUE;
-		for(int i = 0; i <= n / 3; i++) {
-			int s = n - (i*3);
-			if(s == 0) ans = ans > i ? i : ans;
-			if(s % 5 == 0) {
-				ans = ans > i + s / 5 ? i + s / 5 : ans;
-			}	
+		int n = Integer.parseInt(br.readLine());
+
+		int cnt = 0;
+		while(true) {
+			if(n < 0) break;
+			if(n % 5 == 0) {
+				cnt += n / 5;
+				n = 0;
+				break;
+			}
+			n -= 3;
+			cnt++;
 		}
-		if(ans == Integer.MAX_VALUE) ans = -1;
-		System.out.println(ans);
+		if(n != 0) cnt = 0;
+		System.out.println(cnt == 0 ? -1 : cnt);
 	}
 }
