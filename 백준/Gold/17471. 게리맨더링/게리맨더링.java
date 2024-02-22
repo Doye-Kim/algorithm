@@ -1,23 +1,18 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main {
 	static boolean[] isVisited;
-	static ArrayList<Integer> list; // 부분집합
-	static ArrayList<Integer> list2;
+	static boolean[] select;
 	static int n; // 구역의 개수
 	static int sum; // 전체 인구 수
 	static int[] peoples; // 각 구역의 인구 수
 	static int[][] con; // 인접 행렬
-	static int min; // 답
-	static int COUNT;
-	static ArrayList<ArrayList<Integer>> arr = new ArrayList<>();
+	static int min, cnt, COUNT; 
+	
 	public static void main(String[] args) throws Exception {
 		// input
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,6 +24,7 @@ public class Main {
 			sum += peoples[i];
 		}
 		con = new int[n + 1][n + 1];
+
 		COUNT = 1 << n;
 		boolean isConnect = false;
 		for(int i = 1; i <= n; i++) {
@@ -48,48 +44,50 @@ public class Main {
 		if(min == Integer.MAX_VALUE) min = -1;
 		System.out.println(min);
 	}
-	
+	// 부분 조합 찾기
 	static void findPart() {
 		for(int i = 0; i < COUNT; i++) {
-			// src 를 순회하는 index 와 i(bitmask) 를 비교
-			list = new ArrayList<>();
-			list2 = new ArrayList<>();
+			select = new boolean[n + 1];
 			isVisited = new boolean[n+1];
 			for(int j = 0; j < n; j++) {
-				if((i & 1 << j) != 0) list.add(j + 1);
-				else list2.add(j + 1);
+				if((i & 1 << j) != 0) select[j+1] = true;
 			}
-			if(list.size() == 0 || list.size() == n) continue;
-			if(arr.contains(list)) continue;
-			arr.add(list);
-			arr.add(list2);
 			int s = 0;
-			if(bfs(list.get(0), list) &&  bfs(list2.get(0), list2)) {
-				for(int num : list) {
-					s += peoples[num];
+			int x1 = 0, x2 = 0;
+			for(int x = 1; x <= n; x++) {
+				if(x1 != 0 && x2 != 0) break;
+				if(select[x]) x1 = x;
+				else x2 = x;
+	 		}
+			cnt = 0;
+			bfs(x1);
+			if(cnt == 0 || cnt == n) continue;
+			isVisited = new boolean[n+1];
+			bfs(x2);
+			if(cnt == n) {
+				for(int x = 1; x <= n; x++) {
+					if(select[x]) {s += peoples[x];
+					}
 				}
 				if(Math.abs((sum - s) - s) < min) min = Math.abs((sum - s) - s);
 			};
+
 		}
 	}
-	static boolean bfs(int x, ArrayList<Integer> list) {
+	// 연결 확인
+	static void bfs(int x) {
 		Deque<Integer> q = new ArrayDeque<>();
-		Set<Integer> set = new HashSet<>();
 		q.offer(x);
-		set.add(x);
+		isVisited[x] = true;
+		cnt++;
 		while(!q.isEmpty()) {
 			int now = q.poll();
 			for(int i = 1; i <= n; i++ ) {
-				if(isVisited[i] || con[now][i] == 0) continue;
-				
-				if(list.contains(i)) {
-					q.offer(i);
-					set.add(i);
-					isVisited[now] = true;
-				}
+				if(isVisited[i] || con[now][i] == 0 || select[i] != select[x]) continue;
+				q.offer(i);
+				isVisited[i] = true;
+				cnt++;
 			}
 		}
-		if(set.size() == list.size()) return true;
-		else return false;
 	}
 }
