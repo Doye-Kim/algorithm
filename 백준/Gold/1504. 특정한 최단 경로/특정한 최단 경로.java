@@ -39,8 +39,8 @@ public class Main {
 		}
 		// 1 -> v1 -> v2 -> n
 		// 1 -> v2 -> v1 -> n
-		// 시작점: 1, v1, v2
-		dijk(1);
+		// v1, v2
+
 		dijk(v1);
 		dijk(v2);
 		
@@ -49,8 +49,8 @@ public class Main {
 		
 		int[] answer = new int[6];
 
-		answer[0] = weights[1][v1];
-		answer[1] = weights[1][v2];
+		answer[0] = weights[v1][1];
+		answer[1] = weights[v2][1];
 		answer[2] = weights[v1][v2];
 		answer[3] = weights[v1][v2];
 		answer[4] = weights[v2][n];
