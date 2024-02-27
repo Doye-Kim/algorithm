@@ -42,6 +42,7 @@ public class Main {
 		while(!pq.isEmpty()) {
 			Node pos = pq.poll();
 			int x = pos.v;
+			if(cost[x] < pos.w) continue;
 			for(Node node : list.get(x)) {
 				if(cost[node.v] > cost[x] + node.w) {
 					cost[node.v] = cost[x] + node.w;
