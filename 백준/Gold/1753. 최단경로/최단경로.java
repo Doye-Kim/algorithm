@@ -3,65 +3,59 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
-class Node implements Comparable<Node>{
-    int end, weight;
-
-    public Node(int end, int weight){
-        this.end = end;
-        this.weight = weight;
-    }
-
-    @Override
-    public int compareTo(Node o) {
-        return weight - o.weight;
-    }
-}
 public class Main {
 
+	static int v, e, start;
+	static int[] cost;
+	static StringBuilder sb = new StringBuilder();
+	static ArrayList<ArrayList<Node>> list = new ArrayList<>();
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String[] s = br.readLine().split(" ");
-		int V = Integer.parseInt(s[0]);
-		int E = Integer.parseInt(s[1]);
-		int k = Integer.parseInt(br.readLine()) - 1;
-		int[] ws = new int[V];
-		ArrayList<Node>[] list = new ArrayList[V];
-		for(int i = 0; i < V; i++){
-            list[i] = new ArrayList<>();
-        }
-
-		Arrays.fill(ws, Integer.MAX_VALUE);
-
-		for(int i = 0; i < E; i++) {
-			String[] tmp = br.readLine().split(" ");
-			int u = Integer.parseInt(tmp[0]) - 1;
-			int v = Integer.parseInt(tmp[1]) - 1;
-			int w = Integer.parseInt(tmp[2]);
-			list[u].add(new Node(v, w));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		v = Integer.parseInt(st.nextToken());
+		e = Integer.parseInt(st.nextToken());	
+		cost = new int[v+1];
+		Arrays.fill(cost, Integer.MAX_VALUE);
+		start = Integer.parseInt(br.readLine());
+		for(int i = 0; i <= v; i++) {
+			list.add(new ArrayList<>());
 		}
-		PriorityQueue<Node> q = new PriorityQueue<>();
-		boolean[] isVisited = new boolean[V];
-		q.add(new Node(k, 0));
-		ws[k] = 0;
-		while(!q.isEmpty()) {
-			Node cn = q.poll();
-			int cur = cn.end;
-			
-			if(isVisited[cur]) continue;
-			isVisited[cur] = true;
-			for(Node node: list[cur]) {
-				if(ws[node.end] > ws[cur] + node.weight) {
-					ws[node.end] = ws[cur] + node.weight;
-					q.add(new Node(node.end, ws[node.end]));
+		for(int i = 0; i < e; i++) {
+			st = new StringTokenizer(br.readLine());
+			int u = Integer.parseInt(st.nextToken());
+			int v = Integer.parseInt(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
+			list.get(u).add(new Node(v, w));
+		}
+		dijk();
+		for(int i = 1; i <= v; i++) {
+			sb.append(cost[i] == Integer.MAX_VALUE ? "INF" : cost[i]).append("\n");
+		}
+		System.out.println(sb);
+	}
+	static void dijk() {
+		PriorityQueue<Node> pq = new PriorityQueue<>((n1, n2)-> n1.w - n2.w);
+		pq.offer(new Node(start, 0));
+		cost[start] = 0;
+		while(!pq.isEmpty()) {
+			Node pos = pq.poll();
+			int x = pos.v;
+			for(Node node : list.get(x)) {
+				if(cost[node.v] > cost[x] + node.w) {
+					cost[node.v] = cost[x] + node.w;
+					pq.offer(new Node(node.v, cost[node.v]));
 				}
 			}
 		}
-		for(int i = 0; i < V; i++) {
-			if(ws[i] == Integer.MAX_VALUE) System.out.println("INF");
-			else System.out.println(ws[i]);
-		}
-		
 	}
+	static class Node{
+		int v, w;
 
+		public Node(int v, int w) {
+			this.v = v;
+			this.w = w;
+		}
+	}
 }
