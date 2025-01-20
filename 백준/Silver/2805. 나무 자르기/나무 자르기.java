@@ -16,24 +16,29 @@ public class Main {
             trees[i] = Integer.parseInt(st.nextToken());
         }
         Arrays.sort(trees);
-        binarySearch(0, trees[n-1], trees[n-1] / 2);
+        binarySearch(0, trees[n-1]);
         System.out.println(ans);
     }
-    static int binarySearch(int start, int end, int mid){
-        if(start >= mid) return 0;
-        if(isCutEnough(mid)) {
-            ans = Math.max(ans, mid);
-            return binarySearch(mid, end, (mid + end) / 2);
+    static void binarySearch(int start, int end){
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            
+            if (isCutEnough(mid)) {
+                ans = mid;
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
         }
-        else return binarySearch(start, mid, (start + mid) / 2);
     }
     
     static boolean isCutEnough(int height){
         long sum = 0;
-        for(int i = 0; i < n; i++){
-            if(trees[i] - height > 0) sum += trees[i] - height;
+        for(int i = n - 1; i >= 0; i--){
+            if(trees[i] <= height) break;
+            sum += trees[i] - height;
+            if(sum >= m) return true;
         }
-        if(sum >= m) return true;
-        else return false;
+        return false;
     }
 }
