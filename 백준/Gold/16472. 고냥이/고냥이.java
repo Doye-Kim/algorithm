@@ -2,12 +2,9 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int[] target;
-    static int n, m;
-    static StringBuilder sb = new StringBuilder();
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		n = Integer.parseInt(br.readLine());
+		int n = Integer.parseInt(br.readLine());
 		String str = br.readLine();
 		HashMap<Character, Integer> map = new HashMap<>();
 		int ans = 0;
