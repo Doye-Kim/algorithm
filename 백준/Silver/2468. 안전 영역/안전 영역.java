@@ -25,7 +25,7 @@ public class Main {
             for(int i = 0; i < n; i++){
                 for(int j = 0; j < n; j++){
                     if(!visit[i][j] && map[i][j] > h) {
-                        bfs(h, i, j);
+                        dfs(h, i, j);
                         cnt++;
                     }
                 }
@@ -34,19 +34,14 @@ public class Main {
         }
         System.out.print(maxCnt);
 	}
-	static void bfs(int height, int y, int x){
-	    ArrayDeque<Node> q = new ArrayDeque<>();
-	    q.offer(new Node(y, x));
-	    while(!q.isEmpty()){
-	        Node node = q.poll();
-	        for(int d = 0; d < 4; d++){
-	            int ny = node.y + dy[d];
-	            int nx = node.x + dx[d];
-	            if(ny < 0 || ny >= n || nx < 0 || nx >= n || visit[ny][nx] || map[ny][nx] <= height) continue;
-	            q.offer(new Node(ny, nx));
-	            visit[ny][nx] = true;
-	        }
-	    }
+	static void dfs(int height, int y, int x){
+	    visit[y][x] = true;
+        for(int d = 0; d < 4; d++){
+            int ny = y + dy[d];
+            int nx = x + dx[d];
+            if(ny < 0 || ny >= n || nx < 0 || nx >= n || visit[ny][nx] || map[ny][nx] <= height) continue;
+            dfs(height, ny, nx);
+        }
 	}
 	
 	static class Node{
