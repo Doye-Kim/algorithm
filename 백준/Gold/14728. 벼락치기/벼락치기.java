@@ -13,15 +13,12 @@ public class Main {
             bags[i][0] = Integer.parseInt(st.nextToken());
             bags[i][1] = Integer.parseInt(st.nextToken());
         }
-        int[][] dp = new int[n + 1][t + 1];
+        int[] dp = new int[t + 1];
         for(int i = 1; i <= n; i++){
-            for(int j = 1; j <= t; j++){
-                if(bags[i][0] > j) dp[i][j] = dp[i-1][j];
-                else {
-                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j - bags[i][0]] + bags[i][1]);
-                }
+            for(int j = t; j >= bags[i][0]; j--){
+                dp[j] = Math.max(dp[j], dp[j - bags[i][0]] + bags[i][1]);
             }
         }
-        System.out.println(dp[n][t]);
+        System.out.println(dp[t]);
 	}
 }
