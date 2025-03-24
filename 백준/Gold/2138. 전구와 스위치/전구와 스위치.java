@@ -3,42 +3,59 @@ import java.util.*;
 public class Main
 {
     static int n;
-    static String after;
+    static boolean[] after, b1, b2;
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	    n = Integer.parseInt(br.readLine());
-	    char[] before = br.readLine().toCharArray();
-	    char[] before2 = before.clone();
-	    before2[0] = before[0] == '0' ? '1' : '0';
-	    before2[1] = before[1] == '0' ? '1' : '0';
-	    after = br.readLine();
-	    
-	    int c1 = calcCnt(0, before);
-	    int c2 = calcCnt(1, before2);
-	    
-	    if(c1 > -1 && c2 > -1) System.out.println(Math.min(c1, c2));
-	    else if(c1 == -1 && c2 != -1) System.out.println(c2);
-	    else if(c2 == -1 && c1 != -1) System.out.println(c1);
-	    else System.out.println(-1);
-	}
-	static int calcCnt(int cnt, char[] before){
-	    for(int i = 1; i < n - 1; i++){
-	        if(before[i - 1] == after.charAt(i - 1)) continue;
+	    String before = br.readLine();
+	    String afterTmp = br.readLine();
+	    b1 = new boolean[n];
+	    b2 = new boolean[n];
+	    after = new boolean[n];
+        
+	    for(int i = 0; i < n; i++){
+	        if(before.charAt(i) == '0') {
+	            b1[i] = false;
+	            b2[i] = false;
+	        }
 	        else {
-	            cnt++;
-	            before[i - 1] = before[i - 1] == '0' ? '1' : '0';
-	            before[i] = before[i] == '0' ? '1' : '0';
-	            before[i + 1] = before[i + 1] == '0' ? '1' : '0';
+	            b1[i] = true;
+	            b2[i] = true;
 	        }
 	    }
-	    if(before[n - 2] != after.charAt(n - 2)) {
-	        cnt++;
-	        before[n - 2] = before[n - 2] == '0' ? '1' : '0';
-            before[n - 1] = before[n - 1] == '0' ? '1' : '0';
+	    b2[0] = !b2[0];
+	    b2[1] = !b2[1];
+	    
+	    for(int i = 0; i < n; i++){
+	        if(afterTmp.charAt(i) == '0') after[i] = false;
+	        else after[i] = true;
 	    }
+	    
+	    int c1 = 0;
+	    int c2 = 1;
+	    
 	    for(int i = 1; i < n; i++){
-	        if(before[i] != after.charAt(i)) return -1;
+	        if(b1[i - 1] != after[i - 1]) {
+	            c1++;
+	            onOff(i, b1);
+	        }
+	        if(b2[i - 1] != after[i - 1]) {
+	            c2++;
+	            onOff(i, b2);
+	        }
 	    }
-	    return cnt;
+	    
+	    for(int i = 1; i < n; i++){
+	        if(b1[i] != after[i]) c1 = Integer.MAX_VALUE;
+	        if(b2[i] != after[i]) c2 = Integer.MAX_VALUE;
+	    }
+	    int answer = Math.min(c1, c2);
+	    
+	    System.out.println(answer == Integer.MAX_VALUE ? -1 : answer);
+	}
+	static void onOff(int i, boolean[] before){
+	    before[i - 1] = !before[i - 1];
+        before[i] = !before[i];
+        if(i < n - 1) before[i + 1] = !before[i + 1];
 	}
 }
