@@ -20,60 +20,56 @@ public class Main
 		    }
 		}
 		StringBuilder sb = new StringBuilder();
-		if(n % 2 == 0){
-		    for(int i = 0; i < r; i++){
-		        for(int j = 0; j < c; j++){
-		            sb.append('O');
-		        }
-		        sb.append("\n");
-		    }
-		}
-		else{
-		    for(int i = 0; i < (n / 2); i++){
-		        bomb();
-		    }
-		    for(int i = 0; i < r; i++){
-		        for(int j = 0; j < c; j++){
-		            sb.append(map[i][j]);
-		        }
-		        sb.append("\n");
-		    }
-		}
+		if (n == 1) {
+            printMap(map);
+        } else if (n % 2 == 0) {
+            printFullO();
+        } else {
+            char[][] afterFirstBomb = bomb(map);
+            if (n % 4 == 3) {
+                printMap(afterFirstBomb);
+            } else {
+                printMap(bomb(afterFirstBomb));
+            }
+        }
 		System.out.print(sb);
 	}
-	static void bomb(){
-        HashSet<Point> set = new HashSet<>();
-	    for(int i = 0; i < r; i++){
-            for(int j = 0; j < c; j++){
-                if(map[i][j] == 'O'){
-                    set.add(new Point(i, j));
-                    set.add(new Point(i + 1, j));
-                    set.add(new Point(i - 1, j));
-                    set.add(new Point(i, j + 1));
-                    set.add(new Point(i, j - 1));
+	static char[][] bomb(char[][] before){
+        char[][] filled = new char[r][c];
+        for (char[] row : filled) Arrays.fill(row, 'O');
+
+        int[] dx = {0, 0, -1, 1};
+        int[] dy = {-1, 1, 0, 0};
+
+        for (int i = 0; i < r; i++) {
+            for (int j = 0; j < c; j++) {
+                if (before[i][j] == 'O') {
+                    filled[i][j] = '.';
+                    for (int d = 0; d < 4; d++) {
+                        int ni = i + dy[d];
+                        int nj = j + dx[d];
+                        if (ni >= 0 && ni < r && nj >= 0 && nj < c) {
+                            filled[ni][nj] = '.';
+                        }
+                    }
                 }
             }
-	    }
-	    for(int i = 0; i < r; i++){
-	        Arrays.fill(map[i], 'O');
-	    }
-	    for(Point p : set){
-            int px = p.x;
-            int py = p.y;
-	        if(py < 0 || px < 0 || py >= r || px >= c) continue;
-	        
-	        map[py][px] = '.';
-	    }
+        }
+        return filled;
 	}
-	static class Point{
-	    int y, x;
-	    public Point(int y, int x){
-	        this.y = y;
-	        this.x = x;
-	    }
-	    public boolean equals(Object o){
-	        Point point = (Point)o;
-	        return point.y == this.y && point.x == this.x ? true : false;
-	    }
-	}
+	static void printMap(char[][] map) {
+        StringBuilder sb = new StringBuilder();
+        for (char[] row : map) {
+            sb.append(row).append('\n');
+        }
+        System.out.print(sb);
+    }
+
+    static void printFullO() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < r; i++) {
+            sb.append("O".repeat(c)).append('\n');
+        }
+        System.out.print(sb);
+    }
 }
