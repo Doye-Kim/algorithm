@@ -14,7 +14,7 @@ public class Main
 		while(true){
 		    int p = 0;
 		    for(int i = 2; i <= n; i++){
-		        if(!nums[i] && isPrime(i)){
+		        if(!nums[i]){
 		            p = i;
 		            break;
 		        }
@@ -31,11 +31,5 @@ public class Main
 		    if(k <= 0) break;
 		}
 		System.out.println(ans);
-	}
-	static boolean isPrime(int n){
-	    for(int i = 2; i < Math.sqrt(n); i++){
-	        if(n % i == 0) return false;
-	    }
-	    return true;
 	}
 }
