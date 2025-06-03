@@ -42,7 +42,7 @@ public class Main
 	            int nx = node.x + dx[d];
 	            if(ny < 0 || nx < 0 || ny >= n || nx >= m || visit[ny][nx]) continue;
 	            if(map[ny][nx] == 1) {
-	                min = Math.min(min, node.c);
+	                return node.c;
 	            }
 	            else {
 	                q.offer(new Node(ny, nx, node.c + 1));
@@ -50,7 +50,7 @@ public class Main
 	            }
 	        }
 	    }
-	    return min;
+	    return -1;
 	}
 	
 	static class Node{
