@@ -13,21 +13,17 @@ public class Main
 	    for(int i = 0; i < s; i++){
 	        parent[i] = i;
 	    }
-	    char[] dir = {'U', 'D', 'L', 'R'};
-	    int[] dy = {-1, 1, 0, 0};
-	    int[] dx = {0, 0, -1, 1};
 	    
 	    for(int i = 0; i < n; i++){
 	        String str = br.readLine();
 	        for(int j = 0; j < m; j++){
-	            char now = str.charAt(j);
-	            for(int d = 0; d < 4; d++){
-	                if(now == dir[d]){
-	                    int ny = i + dy[d];
-	                    int nx = j + dx[d];
-	                    union(m * i + j, m * ny + nx);
-	                }
-	            }
+	            int ny = i, nx = j;
+                char now = str.charAt(j);
+                if (now == 'U') ny--;
+                else if (now == 'D') ny++;
+                else if (now == 'L') nx--;
+                else if (now == 'R') nx++;
+                union(i * m + j, ny * m + nx);
 	        }
 	    }
 	    HashSet<Integer> set = new HashSet<>();
