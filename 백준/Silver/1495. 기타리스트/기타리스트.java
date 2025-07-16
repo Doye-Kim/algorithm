@@ -13,13 +13,12 @@ public class Main
 		for(int i = 1; i <= n; i++){
 		    volumns[i] = Integer.parseInt(st.nextToken());
 		}
-		int max = n * m + 1;
-		int[][] dp = new int[n + 1][max];
+		int[][] dp = new int[n + 1][m + 1];
 		dp[0][s] = 1;
 		int ans = 0;
 		for(int i = 1; i <= n; i++){
 		    boolean flag = false;
-		    for(int j = 0; j < max; j++){
+		    for(int j = 0; j <= m; j++){
 		        if(dp[i - 1][j] == 1){
 		            int v1 = j + volumns[i];
 		            int v2 = j - volumns[i];
@@ -39,7 +38,7 @@ public class Main
 		    }
 		}
 	    if(ans != -1){
-	        for(int i = max - 1; i >= 0; i--){
+	        for(int i = m; i >= 0; i--){
 	            if(dp[n][i] == 1){
 	                ans = i;
 	                break;
