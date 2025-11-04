@@ -15,8 +15,8 @@ public class Main
 		int ex = 0;
 		
 		if(k != 0){
-		    ey = k / m;
-		    ex = k % m - 1;
+		    ey = (k - 1) / m;
+            ex = (k - 1) % m;
 		    toCircle = calcCnt(0, 0, ey, ex);
 		}
 		int toEnd = calcCnt(ey, ex, n - 1, m - 1);
